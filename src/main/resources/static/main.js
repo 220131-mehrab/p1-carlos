@@ -1,4 +1,4 @@
-document.querySelector('h1').innerText = "App";
+document.querySelector('h1').innerText = "FRC App";
 
 fetch('/team').then(resp => resp.json()).then(teams => {
     document.querySelector('#teams').innerHTML = listTeams(teams);

@@ -9,7 +9,13 @@
 </head>
 <body>
     <h1>Hi</h1>
+    <form action="/team" method="post">
+        ID: <input type="number" name="teamId" id="teamId"/>
+        Name: <input type="text" name="teamName" id="teamName"/>
+        <button type="button" onclick="postTeam()">Add Team</button>
+    </form>
     <div id="teams"></div>
     <script src="main.js"></script>
+    <script src="postTeam.js"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -80,6 +81,22 @@ public class Server {
                 String results = mapper.writeValueAsString(teams);
                 resp.setContentType("application/json");
                 resp.getWriter().println(results);
+            }
+        
+            @Override
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+                    throws ServletException, IOException {
+                ObjectMapper mapper = new ObjectMapper();
+                Team newTeam = mapper.readValue(req.getInputStream(), Team.class);
+
+                try{
+                    PreparedStatement stmt = conn.prepareStatement("insert into Team values(?, ?)");
+                    stmt.setInt(1, newTeam.getTeamId());
+                    stmt.setString(2, newTeam.getTeamName());
+                    stmt.executeUpdate();
+                } catch(SQLException e) {
+                    System.err.println("Failed to insert: " + e.getMessage());
+                }
             }
         }).addMapping("/team");
     }
