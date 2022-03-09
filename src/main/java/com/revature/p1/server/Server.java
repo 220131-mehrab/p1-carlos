@@ -12,6 +12,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.p1.domain.Team;
+import com.revature.p1.servlets.DefaultServlet;
+import com.revature.p1.servlets.TeamServlet;
 
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
@@ -42,63 +44,12 @@ public class Server {
         server.addContext("", null);
 
         // Defualt servlet
-        server.addServlet(webAppName, "defaultServlet", new HttpServlet() {
-            @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                    throws ServletException, IOException {
-                
-                        String filename = req.getPathInfo();
-                        String resourceDir = "static";
-                        InputStream file = getClass().getClassLoader().getResourceAsStream(resourceDir + filename);
-                        String mimeType = getServletContext().getMimeType(filename);
-                        resp.setContentType(mimeType);
-
-                        IOUtils.copy(file, resp.getOutputStream());
-            }
-        }).addMapping("/*");
+        server.addServlet(webAppName, "defaultServlet", new DefaultServlet()).addMapping("/*");
 
         // Team Servlet 
         Connection conn = DriverManager.getConnection("jdbc:h2:mem:test;INIT=runscript from 'classpath:schema.sql'", "sa", "");
         
-        server.addServlet(webAppName, "teamServlet", new HttpServlet() {
-            @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                    throws ServletException, IOException {
-                List<Team> teams = new ArrayList<>();
-                
-                try {
-                    ResultSet rs = conn.prepareStatement("select * from Team").executeQuery();
-
-                    while (rs.next()) {
-                        teams.add(new Team(rs.getInt("teamId"), rs.getString("teamName")));
-                    }
-                } catch (SQLException e) {
-                    System.err.println("Failed to retrieve from db: " + e.getSQLState());
-                }
-                
-                // Object Mapper
-                ObjectMapper mapper = new ObjectMapper();
-                String results = mapper.writeValueAsString(teams);
-                resp.setContentType("application/json");
-                resp.getWriter().println(results);
-            }
-        
-            @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-                    throws ServletException, IOException {
-                ObjectMapper mapper = new ObjectMapper();
-                Team newTeam = mapper.readValue(req.getInputStream(), Team.class);
-
-                try{
-                    PreparedStatement stmt = conn.prepareStatement("insert into Team values(?, ?)");
-                    stmt.setInt(1, newTeam.getTeamId());
-                    stmt.setString(2, newTeam.getTeamName());
-                    stmt.executeUpdate();
-                } catch(SQLException e) {
-                    System.err.println("Failed to insert: " + e.getMessage());
-                }
-            }
-        }).addMapping("/team");
+        server.addServlet(webAppName, "teamServlet", new TeamServlet(conn)).addMapping("/team");
     }
 
     /**
