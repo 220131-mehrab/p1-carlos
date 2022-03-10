@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import com.revature.p1.servlets.DefaultServlet;
+import com.revature.p1.servlets.EventServlet;
 import com.revature.p1.servlets.TeamServlet;
 
 import org.apache.catalina.LifecycleException;
@@ -36,6 +37,7 @@ public class Server {
         Connection conn = DriverManager.getConnection("jdbc:h2:mem:test;INIT=runscript from 'classpath:schema.sql'", "sa", "");
         
         server.addServlet(webAppName, "teamServlet", new TeamServlet(conn)).addMapping("/teams");
+        server.addServlet(webAppName, "eventServlet", new EventServlet(conn)).addMapping("/events");
     }
 
     /**
