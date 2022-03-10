@@ -35,7 +35,7 @@ public class Server {
         // Team Servlet 
         Connection conn = DriverManager.getConnection("jdbc:h2:mem:test;INIT=runscript from 'classpath:schema.sql'", "sa", "");
         
-        server.addServlet(webAppName, "teamServlet", new TeamServlet(conn)).addMapping("/team");
+        server.addServlet(webAppName, "teamServlet", new TeamServlet(conn)).addMapping("/teams");
     }
 
     /**

@@ -1,0 +1,14 @@
+body {
+    background-color: #3500d4;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: white;
+}
+
+button {
+    background-color: black;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: larger;
+    color: white;
+    width: 100px;
+    height: 50px;
+}
