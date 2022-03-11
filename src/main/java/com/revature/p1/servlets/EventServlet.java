@@ -56,4 +56,20 @@ public class EventServlet extends HttpServlet {
         resp.setContentType("application/json");
         resp.getWriter().println(results);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Event newEvent = mapper.readValue(req.getInputStream(), Event.class);
+
+        try {
+            PreparedStatement stmt = conn.prepareStatement("insert into table values (?, ?)");
+            stmt.setInt(1, newEvent.getEventId());
+            stmt.setString(2, newEvent.getEventName());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Failed to insert values: " + e.getSQLState());
+        }
+    }
 }
