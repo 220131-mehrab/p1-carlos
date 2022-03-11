@@ -1,8 +1,12 @@
 let searchTerms = window.location.search;
 
-fetch('/events' + searchTerms).then(resp => resp.json()).then(events => {
-    document.querySelector('#events').innerHTML = printEvents(events);
-});
+fetchEvents();
+
+function fetchEvents() {
+    fetch('/events' + searchTerms).then(resp => resp.json()).then(events => {
+        document.querySelector('#events').innerHTML = printEvents(events);
+    });
+}
 
 function printEvents(json) {
     return `${json.map(printEvent).join('\n')}`;

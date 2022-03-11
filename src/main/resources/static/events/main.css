@@ -3,3 +3,14 @@ body {
     font-family: Georgia, 'Times New Roman', Times, serif;
     color: white;
 }
+
+form {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-decoration: underline;
+}
+
+button {
+    background-color: black;
+    color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
