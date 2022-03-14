@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.revature.p1.servlets.RegisteredServlet;
 import com.revature.p1.servlets.DefaultServlet;
 import com.revature.p1.servlets.EventServlet;
 import com.revature.p1.servlets.TeamServlet;
@@ -38,6 +39,7 @@ public class Server {
         
         server.addServlet(webAppName, "teamServlet", new TeamServlet(conn)).addMapping("/teams");
         server.addServlet(webAppName, "eventServlet", new EventServlet(conn)).addMapping("/events");
+        server.addServlet(webAppName, "attendeeServlet", new RegisteredServlet(conn)).addMapping("/registered");
     }
 
     /**
