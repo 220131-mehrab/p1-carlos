@@ -30,8 +30,10 @@ public class RegisteredServlet extends HttpServlet{
 
         if (eventId != null) {
             try {
-                String query = "select * from Team where teamId in (select teamId from Registered where eventId = '" + eventId + "')";
-                ResultSet rs = conn.prepareStatement(query).executeQuery();
+                String query = "select * from Team where teamId in (select teamId from Registered where eventId = ?)";
+                PreparedStatement stmt = conn.prepareStatement(query);
+                stmt.setString(1, eventId);
+                ResultSet rs = stmt.executeQuery();
 
                 while (rs.next()) {
                     results.add(new Team(rs.getInt("teamId"), rs.getString("teamName")));
@@ -53,7 +55,6 @@ public class RegisteredServlet extends HttpServlet{
         Team regTeam = mapper.readValue(req.getInputStream(), Team.class);
 
         String eventId = req.getParameter("eventId");
-        System.out.println(eventId);
 
         try {
             String query = "insert into Registered values(?, ?)";

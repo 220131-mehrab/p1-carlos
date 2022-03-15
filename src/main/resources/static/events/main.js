@@ -1,6 +1,7 @@
 let searchTerms = window.location.search;
 
 fetchEvents();
+
 if (searchTerms != '')
     fetchRegistered()
 

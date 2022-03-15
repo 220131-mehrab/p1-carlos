@@ -39,7 +39,7 @@ public class Server {
         
         server.addServlet(webAppName, "teamServlet", new TeamServlet(conn)).addMapping("/teams");
         server.addServlet(webAppName, "eventServlet", new EventServlet(conn)).addMapping("/events");
-        server.addServlet(webAppName, "attendeeServlet", new RegisteredServlet(conn)).addMapping("/registered");
+        server.addServlet(webAppName, "registerServlet", new RegisteredServlet(conn)).addMapping("/registered");
     }
 
     /**
