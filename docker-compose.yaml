@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  p1-carlos:
+    image: p1-carlos
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
